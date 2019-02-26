@@ -17,7 +17,6 @@ void print_array_2D(int **arr, int rows, int cols){
 	printf("\n");
 }
 
-
 int main() {	
 	const char * files[] = {"input1.txt", "input2.txt", "input3.txt"};   
 
@@ -50,16 +49,30 @@ int main() {
 				fscanf(pfile, "%d", &points[i]);
 			}
 			
-			printf("There are total %d segments, and %d points\n", s, p);
+			int ** array1 = malloc(p*sizeof(int *));
+			for (int i=0; i < p; i++){
+				array1[i] = malloc(2*sizeof(int));
+			}
+			int ** array2 = malloc(p*sizeof(int *));
+			for (int i=0; i < p; i++){
+				array2[i] = malloc(2*sizeof(int));
+			}
 			
-			print_array_2D(segments, s, 2);
-			print_array(points, p);
-			//TODO: pass s, p, segments, and points to your two algorithms
-			//the output should be an array of size p containing 
-			//-for each point- the number of covering segments 
-			
-			//TODO: implement - compare these outputs from 2 algorithms
-			
+			naive_points_segments(s, p, segments, points, array1);
+			good_points_segments(s, p, segments, points, array2);
+
+			for(int i = 0; i < p; i++) {
+				if(array1[i][1] != array2[i][1]) {
+					print_array_2D(array1, p, 2);
+					print_array_2D(array2, p, 2);
+					printf("Doesn't match\n");
+				}
+			}
+		
+			free(segments);
+			free(points);
+			free(array1);
+			free(array2);
 		}
 		fclose(pfile);
 	}

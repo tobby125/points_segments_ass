@@ -6,4 +6,7 @@
 
 void print_array(int *arr, int size);
 void print_array_2D(int **arr, int rows, int cols);
+void naive_points_segments(int s, int p, int ** segments, int * points, int ** array);
+void good_points_segments(int s, int p, int ** segments, int * points, int ** array);
+int compare(const void *pa, const void *pb);
 #endif
