@@ -19,8 +19,11 @@ void print_array_2D(int **arr, int rows, int cols){
 
 int main() {	
 	const char * files[] = {"input1.txt", "input2.txt", "input3.txt"};   
-
+	int v = 1;
 	for (int f=0; f < 3; f++){
+		if(v == 0) {
+			break;
+		}
 		FILE *pfile = fopen(files[f], "r");
 		if(pfile == NULL)  {
 			printf("Error opening file %s\n", files[f]);
@@ -28,7 +31,10 @@ int main() {
 		}
 		
 		int s, p;
-		while(fscanf(pfile, "%d %d", &s, &p)!=EOF){		
+		while(fscanf(pfile, "%d %d", &s, &p)!=EOF){	
+			if(v == 0) {
+				break;
+			}
 		
 			//allocate 2D array to hold s segments
 			int ** segments = malloc(s*sizeof(int *));
@@ -60,12 +66,21 @@ int main() {
 			
 			naive_points_segments(s, p, segments, points, array1);
 			good_points_segments(s, p, segments, points, array2);
-
+			
+			printf("\nSegments: ");
+			print_array_2D(segments, s, 2);
+			printf("Points: ");
+			print_array(points, p);
+			printf("Naive algorithm: ");
+			print_array_2D(array1, p, 2);
+			printf("Good algorithm: ");
+			print_array_2D(array2, p, 2);
+			
 			for(int i = 0; i < p; i++) {
 				if(array1[i][1] != array2[i][1]) {
-					print_array_2D(array1, p, 2);
-					print_array_2D(array2, p, 2);
-					printf("Doesn't match\n");
+					printf("\nDoesn't match");
+					v = 0;
+					break;
 				}
 			}
 		
@@ -75,6 +90,9 @@ int main() {
 			free(array2);
 		}
 		fclose(pfile);
+	}
+	if(v == 1) {
+		printf("\nAll matched");
 	}
 	return 0;
 }
